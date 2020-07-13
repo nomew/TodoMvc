@@ -1,0 +1,220 @@
+﻿
+@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="margin: 0 0; padding: 0 30%;">
+    <h2 style="text-align: center; margin-bottom: 15px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">REGISTRATION</h2>
+    <form id="form_registration">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label for="firstname">First Name:</label>
+            <input type="text" class="form-control" id="firstname" name="FirstName" placeholder="First Name" style="max-width: 100%;" required>
+            <div id="error_firstname" class="bg-danger text-danger text-center div-error" hidden></div>
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last Name:</label>
+            <input type="text" class="form-control" id="lastname" name="LastName" placeholder="Last Name" style="max-width: 100%;" required>
+            <div id="error_lastname" class="bg-danger text-danger text-center div-error" hidden></div>
+        </div>
+        <div class="form-group">
+            <label for="birthdate">Birth Date:</label>
+            <input type="date" class="form-control" id="birthdate" name="BirthDate" style="max-width: 100%;" required>
+            <div id="error_birthdate" class="bg-danger text-danger text-center div-error" hidden></div>
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select id="gender" class="form-control" name="Gender" style="max-width: 100%;" required>
+                <option value="1">Male</option>
+                <option value="0">Female</option>
+            </select>
+            <div id="error_gender" class="bg-danger text-danger text-center div-error" hidden></div>
+        </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="Username" placeholder="Username" style="max-width: 100%;" required>
+            <div id="error_username" class="bg-danger text-danger text-center div-error" hidden></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <div class="input-group" id="show_hide_password" style="cursor: pointer;">
+                <input type="password" class="form-control" name="Password" id="password" placeholder="Password" style="max-width: 100%;" required>
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div id="error_password" class="bg-danger text-danger text-center div-error" hidden></div>
+        </div>
+        <div class="form-group">
+            <label for="confirmpassword">Confirm Password:</label>
+            <div class="input-group" id="show_hide_confirm_password" style="cursor: pointer;">
+                <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" style="max-width: 100%;" required>
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div id="error_confirm_password" class="bg-danger text-danger text-center div-error" hidden></div>
+        </div>
+        <input type="submit" value="Register" class="btn btn-primary btn-block" style="max-width: 100%; outline: none;" />
+    </form>
+</div>
+
+<div class="modal fade" id="success_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Message</h4>
+            </div>
+            <div class="modal-body text-center text-success" id="success_message" style="font-weight: bold; font-size: 18px;">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn_okay" style="outline: none;">Okay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(() => {
+        $("#form_registration").submit((e) => {
+            e.preventDefault();
+            const firstname = $("#firstname").val().trim()
+            const lastname = $("#lastname").val().trim()
+            const birthdate = $("#birthdate").val()
+            const username = $("#username").val().trim()
+            const password = $("#password").val().trim()
+            const confirmPassword = $("#confirm_password").val().trim()
+            let hasError = false
+            if (firstname === "") {
+                $("#error_firstname").show().html("First Name is Required.")
+                $("#firstname").css("border-color", "#d9534f").focus()
+                hasError = true
+            } else {
+                $("#error_lastname").hide().html("")
+                $("#lastname").css("border-color", "#ccc")
+            }
+            if (lastname === "") {
+                $("#error_lastname").show().html("Last Name is Required.")
+                $("#lastname").css("border-color", "#d9534f").focus()
+                hasError = true
+            } else {
+                $("#error_lastname").hide().html("")
+                $("#lastname").css("border-color", "#ccc")
+            }
+            const validationResult = validate_birthdate(birthdate)
+            if (!validationResult) {
+                $("#error_birthdate").show().html("Invalid Birthdate.")
+                $("#birthdate").css("border-color", "#d9534f").focus()
+                hasError = true
+            } else {
+                $("#error_birthdate").hide().html("")
+                $("#birthdate").css("border-color", "#ccc")
+            }
+            if (username === "") {
+                $("#error_username").show().html("Username is Required.")
+                $("#username").css("border-color", "#d9534f").focus()
+                hasError = true
+            } else {
+                $("#error_username").hide().html("")
+                $("#username").css("border-color", "#ccc")
+            }
+            if (password === "") {
+                $("#error_password").show().html("Password is Required.")
+                $("#password").css("border-color", "#d9534f").focus()
+                $("#show_hide_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                hasError = true
+            } else {
+                $("#error_password").hide().html("")
+                $("#password").css("border-color", "#ccc")
+                $("#show_hide_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+            }
+            if (confirmPassword === "") {
+                $("#error_confirm_password").show().html("Confirm Password is Required.")
+                $("#confirm_password").css("border-color", "#d9534f").focus()
+                $("#show_hide_confirm_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                hasError = true
+            } else {
+                $("#error_confirm_password").hide().html("")
+                $("#confirm_password").css("border-color", "#ccc")
+                $("#show_hide_confirm_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+            }
+            if (!hasError) {
+                if (password === confirmPassword) {
+                    const data = $("#form_registration").serialize()
+                    $.post('Register', data, (res) => {
+                        if (!res.Result) {
+                            $("#error_username").show().html(res.Message)
+                            $("#username").css("border-color", "#ff0000").focus()
+                        } else {
+                            $('#success_modal').modal('show')
+                            $("#success_message").html(res.Message)
+                            $('#show_hide_confirm_password input').attr('type', 'password');
+                            $('#show_hide_confirm_password span').removeClass("glyphicon-eye-close");
+                            $('#show_hide_confirm_password span').addClass("glyphicon-eye-open");
+                            $('#show_hide_password input').attr('type', 'password');
+                            $('#show_hide_password span').removeClass("glyphicon-eye-close");
+                            $('#show_hide_password span').addClass("glyphicon-eye-open");
+                        }
+                    })
+                } else {
+                    $("#error_password").show().html("Password confirmation does not match.")
+                    $("#password").css("border-color", "#ff0000").focus()
+                }
+            }
+        })
+
+        $("#btn_okay").click(() => {
+            location.href = '/'
+        })
+
+        $("#show_hide_password").click((e) => {
+            if (e.target.tagName !== "INPUT") {
+                if ($("#show_hide_password input").attr("type") === "text") {
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#show_hide_password span').removeClass("glyphicon-eye-close");
+                    $('#show_hide_password span').addClass("glyphicon-eye-open");
+                } else {
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#show_hide_password span').removeClass("glyphicon-eye-open");
+                    $('#show_hide_password span').addClass("glyphicon-eye-close");
+                }
+            }
+        })
+
+        $("#show_hide_confirm_password").click((e) => {
+            if (e.target.tagName !== "INPUT") {
+                if ($("#show_hide_confirm_password input").attr("type") === "text") {
+                    $('#show_hide_confirm_password input').attr('type', 'password');
+                    $('#show_hide_confirm_password span').removeClass("glyphicon-eye-close");
+                    $('#show_hide_confirm_password span').addClass("glyphicon-eye-open");
+                } else {
+                    $('#show_hide_confirm_password input').attr('type', 'text');
+                    $('#show_hide_confirm_password span').removeClass("glyphicon-eye-open");
+                    $('#show_hide_confirm_password span').addClass("glyphicon-eye-close");
+                }
+            }
+        })
+
+        $("#success_modal").on("hidden.bs.modal", () => {
+            location.href = '/'
+        })
+
+        const validate_birthdate = (birthdate) => {
+            let userBirthDate = new Date(birthdate);
+            var currentDate = new Date().toJSON().slice(0, 10) + ' 01:00:00';
+            var age = ~~((Date.now(currentDate) - userBirthDate) / (31557600000));
+            return (age >= 18 && age <= 120)
+        }
+    })
+</script>
+
+<style>
+    .div-error {
+        font-weight: bold;
+        padding: 5px;
+        margin-top: 3px;
+    }
+
+</style>

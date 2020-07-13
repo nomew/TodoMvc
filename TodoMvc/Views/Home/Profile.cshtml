@@ -1,0 +1,389 @@
+﻿
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container" style="padding: 20px 30% 0;">
+        <h2 style="text-align: center; margin-bottom: 20px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Profile</h2>
+        <form id="form_profile">
+            @Html.AntiForgeryToken()
+            <div class="alert alert-success text-center" id="profile_message" hidden>
+                <span class="close" aria-label="close" id="close_alert">&times;</span>
+                <span style="font-weight: bolder;" id="message"></span>
+            </div>
+            <div class="form-group">
+                <label for="firstname">First Name:</label>
+                <input type="text" class="form-control" id="firstname" name="FirstName" style="max-width: 100%; text-transform: capitalize;" readonly required>
+                <div id="error_firstname" class="bg-danger text-danger text-center error" hidden></div>
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name:</label>
+                <input type="text" class="form-control" id="lastname" name="LastName" style="max-width: 100%; text-transform: capitalize;" readonly required>
+                <div id="error_lastname" class="bg-danger text-danger text-center error" hidden></div>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <input type="text" class="form-control" id="gender_text" style="max-width: 100%;" readonly required>
+                <select id="gender" class="form-control hidden" name="Gender" style="max-width: 100%;" required>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="birthdate">Birth Date:</label>
+                <input type="date" class="form-control" id="birthdate" name="BirthDate" style="max-width: 100%;" readonly required>
+                <div id="error_birthdate" class="bg-danger text-danger text-center error" hidden></div>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="Username" style="max-width: 100%;" readonly required>
+                <div id="error_username" class="bg-danger text-danger text-center error" hidden></div>
+            </div>
+            <div id="div1">
+                <button type="button" class="btn btn-block btn-primary" id="btn_update" style="outline: none;">Update</button>
+                <button type="button" class="btn btn-block btn-primary" id="btn_change_password" data-toggle="modal" data-target="#changePasswordModal" style="outline: none;">Change Password</button>
+            </div>
+            <div id="div2" hidden>
+                <button type="submit" class="btn btn-block btn-success" style="outline: none;">Save</button>
+                <button type="button" class="btn btn-block btn-danger" id="btn_close" style="outline: none;">Close</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="form_change_password">
+                    @Html.AntiForgeryToken()
+                    <div class="modal-header">
+                        <h3 class="modal-title text-primary">Change Password</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="current_password" class="col-form-label">Current Password:</label>
+                            <div class="input-group" id="show_hide_current_password" style="cursor: pointer;">
+                                <input type="password" class="form-control" id="current_password" name="CurrentPassword" placeholder="Current Password" style="max-width: 100%;" required>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <div id="error_current_password" class="bg-danger text-danger text-center error" hidden></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_password" class="col-form-label">New Password:</label>
+                            <div class="input-group" id="show_hide_new_password" style="cursor: pointer;">
+                                <input type="password" class="form-control" id="new_password" name="NewPassword" placeholder="New Password" style="max-width: 100%;" required>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <div id="error_new_password" class="bg-danger text-danger text-center error" hidden></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_password" class="col-form-label">Confirm Password:</label>
+                            <div class="input-group" id="show_hide_confirm_password" style="cursor: pointer;">
+                                <input type="password" class="form-control" id="confirm_password" name="ConfirmPassword" placeholder="Confirm Password" style="max-width: 100%;" required>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <div id="error_confirm_password" class="bg-danger text-danger text-center error" hidden></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="outline: none;" id="close_change_password_modal">Close</button>
+                        <button type="submit" class="btn btn-primary" style="outline: none;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="changePasswordSuccessfulModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-primary">Message</h3>
+                </div>
+                <div class="modal-body text-success text-center" style="font-weight: bolder; font-size: 16px;" id="message">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" style="outline: none;" data-dismiss="modal">Okay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    var profile;
+    $(() => {
+        const fetch_profile = () => {
+            $.get("ReadProfile", (res) => {
+                profile = res;
+                render(profile)
+            })
+        }
+        fetch_profile()
+
+        const render = (data) => {
+            $("#firstname").val(data.FirstName)
+            $("#lastname").val(data.LastName)
+            $("#gender").val(data.Gender)
+            $("#gender_text").val(data.Gender === 1 ? "Male" : "Female")
+            $("#birthdate").val(data.BirthDate)
+            $("#username").val(data.Username)
+        }
+
+        $("#btn_update").click(() => {
+            $("#div2").show()
+            $("#div1").hide()
+            $("#form_profile input").removeAttr("readonly")
+            $("#gender_text").hide()
+            $("#gender").removeClass("hidden")
+            $("#profile_message").fadeOut()
+        })
+
+        $("#btn_close").click(() => {
+            $("#div1").show()
+            $("#div2").hide()
+            $("#form_profile input").attr("readonly", true)
+            render(profile)
+            clear_fields()
+        })
+
+        $("#form_profile").submit((e) => {
+            e.preventDefault()
+            const firstname = $("#firstname").val().trim()
+            const lastname = $("#lastname").val().trim()
+            const birthdate = $("#birthdate").val()
+            const username = $("#username").val().trim()
+            let hasError = false
+            if (firstname === "") {
+                $("#error_firstname").show().html("First Name is Required.")
+                $("#firstname").css("border-color", "#ff0000").focus()
+                hasError = true
+            } else {
+                $("#error_firstname").hide().html("")
+                $("#firstname").css("border-color", "#ccc")
+            }
+            if (lastname === "") {
+                $("#error_lastname").show().html("Last Name is Required.")
+                $("#lastname").css("border-color", "#ff0000").focus()
+                hasError = true
+            } else {
+                $("#error_lastname").hide().html("")
+                $("#lastname").css("border-color", "#ccc")
+            }
+            const validatedBirthdate = validate_birthdate(birthdate)
+            if (!validatedBirthdate) {
+                $("#error_birthdate").show().html("Invalid Birthdate.")
+                $("#birthdate").css("border-color", "#ff0000").focus()
+                hasError = true
+            } else {
+                $("#error_birthdate").hide().html("")
+                $("#birthdate").css("border-color", "#ccc")
+            }
+            if (username === "") {
+                $("#error_username").show().html("Username is Required.")
+                $("#username").css("border-color", "#ff0000").focus()
+                hasError = true
+            } else {
+                $("#error_username").hide().html("")
+                $("#username").css("border-color", "#ccc")
+            }
+            if (!hasError) {
+                const data = $("#form_profile").serialize()
+                $.post("UpdateProfile", data, (res) => {
+                    if (res.Success) {
+                        $("#profile_message").show()
+                        $("#profile_message #message").html(res.Message)
+                        fetch_profile()
+                        render(profile)
+                        clear_fields()
+                    } else {
+                        if (res.Message) {
+                            $("#error_username").show().html(res.Message)
+                            $("#username").css("border-color", "#ff0000").focus()
+                        } else {
+                            clear_fields()
+                        }
+                        
+                    }
+                })
+            }
+        })
+
+        const clear_fields = () => {
+            $("#error_firstname").html("").hide()
+            $("#error_lastname").html("").hide()
+            $("#error_birthdate").html("").hide()
+            $("#error_username").html("").hide()
+            $("#firstname").css("border-color", "#ccc").attr("readonly", true)
+            $("#lastname").css("border-color", "#ccc").attr("readonly", true)
+            $("#username").css("border-color", "#ccc").attr("readonly", true)
+            $("#birthdate").css("border-color", "#ccc").attr("readonly", true)
+            $("#gender_text").show().attr("readonly", true)
+            $("#gender").addClass("hidden")
+            $("#div1").show()
+            $("#div2").hide()
+        }
+
+        $("#close_alert").click(() => {
+            $("#profile_message").fadeOut()
+        })
+
+        $("#show_hide_current_password").click((e) => {
+            if (e.target.tagName !== "INPUT") {
+                if ($("#show_hide_current_password input").attr("type") === "text") {
+                    $('#show_hide_current_password input').attr('type', 'password');
+                    $('#show_hide_current_password span').removeClass("glyphicon-eye-close");
+                    $('#show_hide_current_password span').addClass("glyphicon-eye-open");
+                } else {
+                    $('#show_hide_current_password input').attr('type', 'text');
+                    $('#show_hide_current_password span').removeClass("glyphicon-eye-open");
+                    $('#show_hide_current_password span').addClass("glyphicon-eye-close");
+                }
+            }
+        })
+
+        $("#show_hide_new_password").click((e) => {
+            if (e.target.tagName !== "INPUT") {
+                if ($("#show_hide_new_password input").attr("type") === "text") {
+                    $('#show_hide_new_password input').attr('type', 'password');
+                    $('#show_hide_new_password span').removeClass("glyphicon-eye-close");
+                    $('#show_hide_new_password span').addClass("glyphicon-eye-open");
+                } else {
+                    $('#show_hide_new_password input').attr('type', 'text');
+                    $('#show_hide_new_password span').removeClass("glyphicon-eye-open");
+                    $('#show_hide_new_password span').addClass("glyphicon-eye-close");
+                }
+            }
+        })
+
+        $("#show_hide_confirm_password").click((e) => {
+            if (e.target.tagName !== "INPUT") {
+                if ($("#show_hide_confirm_password input").attr("type") === "text") {
+                    $('#show_hide_confirm_password input').attr('type', 'password');
+                    $('#show_hide_confirm_password span').removeClass("glyphicon-eye-close");
+                    $('#show_hide_confirm_password span').addClass("glyphicon-eye-open");
+                } else {
+                    $('#show_hide_confirm_password input').attr('type', 'text');
+                    $('#show_hide_confirm_password span').removeClass("glyphicon-eye-open");
+                    $('#show_hide_confirm_password span').addClass("glyphicon-eye-close");
+                }
+            }
+        })
+
+        const clear_fields1 = () => {
+            $("#current_password").val("")
+            $("#new_password").val("")
+            $("#confirm_password").val("")
+            $("#error_current_password").html("").hide()
+            $("#error_new_password").html("").hide()
+            $("#error_confirm_password").html("").hide()
+            $("#current_password").css("border-color", "#ccc")
+            $("#new_password").css("border-color", "#ccc")
+            $("#confirm_password").css("border-color", "#ccc")
+            $("#show_hide_current_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+            $("#show_hide_new_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+            $("#show_hide_confirm_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+        }
+
+        $("#btn_change_password").click(() => {
+            $("#profile_message").hide()
+            $("#profile_message #message").html("")
+        })
+
+        $("#form_change_password").submit((e) => {
+            e.preventDefault()
+            let hasError = false
+            if ($("#current_password").val().trim() === "") {
+                $("#error_current_password").show().html("Current Password is required.")
+                $("#current_password").css("border-color", "#d9534f")
+                $("#show_hide_current_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                hasError = true
+            } else {
+                $("#error_current_password").hide().html("")
+                $("#current_password").css("border-color", "#ccc")
+                $("#show_hide_current_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+            }
+            if ($("#new_password").val().trim() === "") {
+                $("#error_new_password").show().html("New Password is required.")
+                $("#new_password").css("border-color", "#d9534f")
+                $("#show_hide_new_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                hasError = true
+            } else {
+                $("#error_new_password").hide().html("")
+                $("#new_password").css("border-color", "#ccc")
+                $("#show_hide_new_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+            }
+            if ($("#confirm_password").val().trim() === "") {
+                $("#error_confirm_password").show().html("Confirm Password is required.")
+                $("#confirm_password").css("border-color", "#d9534f")
+                $("#show_hide_confirm_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                hasError = true
+            } else {
+                $("#error_confirm_password").hide().html("")
+                $("#confirm_password").css("border-color", "#ccc")
+                $("#show_hide_confirm_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+            }
+            if (!hasError) {
+                if ($("#new_password").val().trim() !== $("#confirm_password").val().trim()) {
+                    $("#error_new_password").show().html("Password Confirmation does not match.")
+                    $("#new_password").css("border-color", "#d9534f")
+                    $("#show_hide_new_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                } else {
+                    const data = $("#form_change_password").serialize()
+                    $.post("ChangePassword", data, (res) => {
+                        if (res.Success) {
+                            $("#changePasswordModal").modal("hide")
+                            $("#changePasswordSuccessfulModal").modal('show')
+                            $("#changePasswordSuccessfulModal #message").html(res.Message)
+                        } else {
+                            if (res.Error === 0) {
+                                $("#error_current_password").show().html(res.Message)
+                                $("#current_password").css("border-color", "#d9534f")
+                                $("#show_hide_current_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                            } else {
+                                $("#error_new_password").show().html(res.Message)
+                                $("#new_password").css("border-color", "#d9534f")
+                                $("#show_hide_new_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                            }
+                            
+                        }
+                    })
+                }
+            }
+        })
+
+        $("#close_change_password_modal").click(() => {
+            clear_fields1()
+        })
+
+        $("#changePasswordModal").on("hidden.bs.modal", () => {
+            clear_fields1()
+        })
+
+        $("#changePasswordSuccessfulModal").on("hidden.bs.modal", () => {
+            location.href = "/"
+        })
+
+        const validate_birthdate = (birthdate) => {
+            let userBirthDate = new Date(birthdate);
+            var currentDate = new Date().toJSON().slice(0, 10) + ' 01:00:00';
+            var age = ~~((Date.now(currentDate) - userBirthDate) / (31557600000));
+            console.log(age)
+            return (age >= 18 && age <= 120)
+        }
+    })
+</script>
+
+<style>
+    .error {
+        font-weight: bold;
+        padding: 5px;
+        margin-top: 3px;
+    }
+</style>

@@ -1,0 +1,268 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<h3 class="text-primary">@TempData["FullName"].ToString().ToUpper()</h3>
+
+<div class="container" style="margin-top: 30px;">
+    <button type="button" class="btn btn-primary" style="outline: none;" data-toggle="modal" data-target="#createTodoModal" aria-label="Left Align">
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+        Create Todo
+    </button>
+    <div style="margin:20px;">
+        <ul class="list-group" id="todo_list">
+        </ul>
+    </div>
+</div>
+
+<div class="modal fade" id="createTodoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="form_create_todo">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h3 class="modal-title text-primary">Create ToDo</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title" class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" id="title" name="Title" placeholder="Title" style="max-width: 100%;" required>
+                        <div id="error_title" class="bg-danger text-danger text-center error" hidden></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="Description" placeholder="Description" style="max-width: 100%; resize: none; height: 100px;" required></textarea>
+                        <div id="error_description" class="bg-danger text-danger text-center error" hidden></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="outline: none;" id="close_create_todo_modal">Close</button>
+                    <button type="submit" class="btn btn-primary" style="outline: none;">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editTodoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="form_edit_todo">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h3 class="modal-title text-primary">Edit ToDo</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title" class="col-form-label">Title:</label>
+                        <input type="hidden" class="form-control" name="TodoId" id="todo_id" />
+                        <input type="text" class="form-control" id="edit_title" name="Title" placeholder="Title" style="max-width: 100%;" required>
+                        <div id="error_edit_title" class="bg-danger text-danger text-center error" hidden></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="edit_description" name="Description" placeholder="Description" style="max-width: 100%; resize: none; height: 100px;" required></textarea>
+                        <div id="error_edit_description" class="bg-danger text-danger text-center error" hidden></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="outline: none;" id="close_edit_todo_modal">Close</button>
+                    <button type="submit" class="btn btn-primary" style="outline: none;">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteTodoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-primary">Delete ToDo</h3>
+            </div>
+            <div class="modal-body">
+                Are you sure to delete <span class="text-primary" style="font-weight: bolder;" id="delete_title"></span>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" style="outline: none;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" style="outline: none;" id="confirm_delete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var todos;
+    $(() => {
+
+        const fetch_todos = () => {
+            $.get("Todo", (res) => {
+                todos = res
+                render(todos)
+            })
+        }
+
+        fetch_todos()
+
+        $("#form_create_todo").submit((e) => {
+            e.preventDefault();
+            let hasError = false
+            if ($("#title").val().trim() === "") {
+                $("#error_title").show().html("Title is required.")
+                $("#title").css("border-color", "#ff0000")
+                hasError = true
+            } else {
+                $("#error_title").hide().html("")
+                $("#title").css("border-color", "#ccc")
+            }
+            if ($("#description").val().trim() === "") {
+                $("#error_description").show().html("Description is required.")
+                $("#description").css("border-color", "#ff0000")
+                hasError = true
+            } else {
+                $("#error_description").hide().html("")
+                $("#description").css("border-color", "#ccc")
+            }
+            if (!hasError) {
+                const data = $("#form_create_todo").serialize()
+                $.post("Todo/Create", data, (res) => {
+                    if (res.Result) {
+                        clear_fields1()
+                        $("#createTodoModal").modal("hide")
+                        fetch_todos()
+                    } else {
+                        $("#error_title").show().html(res.Message)
+                    }
+                })
+            }
+        })
+
+        $("#form_edit_todo").submit((e) => {
+            e.preventDefault();
+            let hasError = false
+            if ($("#edit_title").val().trim() === "") {
+                $("#error_edit_title").show().html("Title is required.")
+                $("#edit_title").css("border-color", "#ff0000")
+                hasError = true
+            } else {
+                $("#error_title").hide().html("")
+                $("#edit_title").css("border-color", "#ccc")
+            }
+            if ($("#edit_description").val().trim() === "") {
+                $("#error_edit_description").show().html("Description is required.")
+                $("#edit_description").css("border-color", "#ff0000")
+                hasError = true
+            } else {
+                $("#error_edit_description").hide().html("")
+                $("#edit_description").css("border-color", "#ccc")
+            }
+            if (!hasError) {
+                const data = $("#form_edit_todo").serialize()
+                $.post("Todo/Edit", data, (res) => {
+                    if (res.Result) {
+                        clear_fields2()
+                        $("#editTodoModal").modal("hide")
+                        fetch_todos()
+                    } else {
+                        if (res.Message) {
+                            $("#error_edit_title").show().html(res.Message)
+                        } else {
+                            $("#editTodoModal").modal("hide")
+                        }
+                    }
+                })
+            }
+        })
+
+        const clear_fields1 = () => {
+            $("#error_title").hide().html("")
+            $("#title").css("border-color", "#ccc").val("")
+            $("#error_description").hide().html("")
+            $("#description").css("border-color", "#ccc").val("")
+        }
+
+        const clear_fields2 = () => {
+            $("#error_edit_title").hide().html("")
+            $("#edit_title").css("border-color", "#ccc").val("")
+            $("#error_edit_description").hide().html("")
+            $("#edit_description").css("border-color", "#ccc").val("")
+        }
+
+        const render = (data) => {
+            $("#todo_list").html("")
+            $.each(data, (key, val) => {
+                $("#todo_list").append(
+                    `<li class="list-group-item">
+                            <sup style="margin-left: 30px; font-weight: bolder; text-transform: uppercase">${val.Title}</sup><br />
+                            <input type="checkbox" style="cursor: pointer;" data-id="${key}" ${(val.IsDone) ? "checked" : ""}/>
+                            <span style="margin-left: 15px; font-size: 15px;" class="${val.IsDone ? "isdone" : ""}">${val.Description}</span>
+                            <div style="float: right ">
+                                <button type="button" class="btn btn-success" data-id="${key}" id="btn_edit" data-toggle="modal" data-target="#editTodoModal" style="border-radius: 100%; outline: none;">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true" data-id="${key}"></span>
+                                </button>
+                                <button type="button" class="btn btn-danger" data-id="${key}" id="btn_delete" data-toggle="modal" data-target="#deleteTodoModal" style="border-radius: 100%; outline: none;">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true" data-id="${key}"></span>
+                                </button>
+                            </div>
+                            <br />
+                            <sub style="margin-left: 30px;">${get_datecreated(val.DateCreated)}</sub>
+                        </li>`
+                )
+            })
+        }
+
+        const get_datecreated = (data) => {
+            let date = new Date(parseInt(data.replace("/Date(", "").replace(")/", ""), 10))
+            return `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()} ${date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })}`
+        }
+
+        $("#todo_list").delegate("input[type=checkbox]", "click", (e) => {
+            const key = parseInt(e.target.getAttribute("data-id"))
+            $.post(`Todo/ChangeIsDoneStatus/${todos[key].TodoId}`, () => {
+                fetch_todos()
+            })
+        })
+
+        $("#todo_list").delegate("#btn_edit", "click", (e) => {
+            const key = parseInt(e.target.getAttribute("data-id"))
+            $("#todo_id").val(todos[key].TodoId)
+            $("#edit_title").val(todos[key].Title.toUpperCase())
+            $("#edit_description").val(todos[key].Description)
+        })
+
+        $("#todo_list").delegate("#btn_delete", "click", (e) => {
+            const key = parseInt(e.target.getAttribute("data-id"))
+            $("#delete_title").html(todos[key].Title.toUpperCase())
+            $("#confirm_delete").attr("data-id", key)
+        })
+
+        $("#confirm_delete").click((e) => {
+            const key = parseInt(e.target.getAttribute("data-id"))
+            $.post(`Todo/Delete/${todos[key].TodoId}`, () => {
+                $("#deleteTodoModal").modal("hide")
+                fetch_todos()
+            })
+        })
+
+        $("#createTodoModal").on("hidden.bs.modal", () => {
+            clear_fields1()
+        })
+
+        $("#editTodoModal").on("hidden.bs.modal", () => {
+            clear_fields2()
+        })
+    })
+
+</script>
+
+<style>
+    .error {
+        font-weight: bold;
+        padding: 5px;
+        margin-top: 3px;
+    }
+
+    .isdone {
+        text-decoration: line-through;
+    }
+</style>

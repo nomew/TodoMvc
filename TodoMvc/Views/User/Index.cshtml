@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container" style="margin: 10% 0; padding: 0 30%;">
+        <h2 style="text-align: center; margin-bottom: 20px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">LOGIN</h2>
+        <form id="form_login">
+            @Html.AntiForgeryToken()
+            <div class="alert alert-danger text-center" id="error_login" hidden>
+                <span class="close" aria-label="close" id="close_alert">&times;</span>
+                <span style="font-weight: bolder;" id="message"></span>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="Username" placeholder="Username" style="max-width: 100%;" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <div class="input-group" id="show_hide_password" style="cursor: pointer;">
+                    <input type="password" class="form-control" id="password" name="Password" placeholder="Password" style="max-width: 100%;" required>
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="LOGIN" class="btn btn-primary btn-block" style="max-width: 100%; outline: none;" />
+        </form>
+    </div>
+
+<script>
+    $(() => {
+        $("#form_login").submit((e) => {
+            e.preventDefault()
+            const data = $("#form_login").serialize()
+            $.post("User/Login", data, (res) => {
+                if (res) {
+                    location.href = 'Home'
+                } else {
+                    $("#error_login").fadeIn()
+                    $("#error_login #message").html("Username or Password is incorrect.")
+                    $("#username").css("border-color", "#d9534f")
+                    $("#password").css("border-color", "#d9534f")
+                    $(".input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                }
+            })
+        })
+
+        $("#close_alert").click(() => {
+            $("#username").css("border-color", "#ccc")
+            $("#password").css("border-color", "#ccc")
+            $(".input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+            $("#error_login").fadeOut()
+        })
+
+        $("#show_hide_password").click((e) => {
+            if (e.target.tagName !== "INPUT") {
+                if ($("#show_hide_password input").attr("type") === "text") {
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#show_hide_password span').removeClass("glyphicon-eye-close");
+                    $('#show_hide_password span').addClass("glyphicon-eye-open");
+                } else {
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#show_hide_password span').removeClass("glyphicon-eye-open");
+                    $('#show_hide_password span').addClass("glyphicon-eye-close");
+                }
+            }
+        })
+    })
+</script>
+
+<style>
+
+</style>
