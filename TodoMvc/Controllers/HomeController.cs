@@ -11,11 +11,6 @@ namespace TodoMvc.Controllers
     {
         public ActionResult Index()
         {
-            using (var context = new AppContextMain())
-            {
-                User user = context.Users.Find(Convert.ToInt32(Session["UserId"].ToString()));
-                TempData["FullName"] = $"{user.FirstName} {user.LastName}";
-            }
             return CheckIfLoggedIn();
         }
 

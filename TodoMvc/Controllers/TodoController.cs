@@ -52,7 +52,7 @@ namespace TodoMvc.Controllers
             using (var context = new AppContextMain())
             {
                 int UserId = Convert.ToInt32(Session["UserId"].ToString());
-                return context.Todos.Where(t => t.Title == title && t.UserReference == UserId).SingleOrDefault() != null;
+                return context.Todos.Where(t => t.Title == title.Trim() && t.UserReference == UserId).SingleOrDefault() != null;
             }
         }
 
@@ -82,10 +82,10 @@ namespace TodoMvc.Controllers
             {
                 Todo temp = context.Todos.Find(todo.TodoId);
 
-                if (temp.Title != todo.Title.ToLower() || temp.Description != todo.Description.ToLower())
+                if (temp.Title != todo.Title.ToLower() || temp.Description != todo.Description)
                 {
                     temp.Title = todo.Title.ToLower();
-                    temp.Description = todo.Description.ToLower();
+                    temp.Description = todo.Description;
                     temp.DateUpdated = DateTime.Now;
                     context.Entry(temp).State = EntityState.Modified;
                     context.SaveChanges();

@@ -1,76 +1,105 @@
 ﻿
 @{
     ViewBag.Title = "Registration";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Index.cshtml";
 }
 
-<div class="container" style="margin: 0 0; padding: 0 30%;">
-    <h2 style="text-align: center; margin-bottom: 15px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">REGISTRATION</h2>
-    <form id="form_registration">
-        @Html.AntiForgeryToken()
-        <div class="form-group">
-            <label for="firstname">First Name:</label>
-            <input type="text" class="form-control" id="firstname" name="FirstName" placeholder="First Name" style="max-width: 100%;" required>
-            <div id="error_firstname" class="bg-danger text-danger text-center div-error" hidden></div>
-        </div>
-        <div class="form-group">
-            <label for="lastname">Last Name:</label>
-            <input type="text" class="form-control" id="lastname" name="LastName" placeholder="Last Name" style="max-width: 100%;" required>
-            <div id="error_lastname" class="bg-danger text-danger text-center div-error" hidden></div>
-        </div>
-        <div class="form-group">
-            <label for="birthdate">Birth Date:</label>
-            <input type="date" class="form-control" id="birthdate" name="BirthDate" style="max-width: 100%;" required>
-            <div id="error_birthdate" class="bg-danger text-danger text-center div-error" hidden></div>
-        </div>
-        <div class="form-group">
-            <label for="gender">Gender:</label>
-            <select id="gender" class="form-control" name="Gender" style="max-width: 100%;" required>
-                <option value="1">Male</option>
-                <option value="0">Female</option>
-            </select>
-            <div id="error_gender" class="bg-danger text-danger text-center div-error" hidden></div>
-        </div>
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" class="form-control" id="username" name="Username" placeholder="Username" style="max-width: 100%;" required>
-            <div id="error_username" class="bg-danger text-danger text-center div-error" hidden></div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <div class="input-group" id="show_hide_password" style="cursor: pointer;">
-                <input type="password" class="form-control" name="Password" id="password" placeholder="Password" style="max-width: 100%;" required>
-                <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+<div class="register-box">
+    <div class="register-logo">
+        <a href="@Url.Action("Registration", "User")"><b>R</b>egistration</a>
+    </div>
+    <div class="card">
+        <div class="card-body register-card-body">
+            <form id="form_registration">
+                @Html.AntiForgeryToken()
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="firstname" name="FirstName" placeholder="First Name" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text" id="icon_firstname">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div id="error_password" class="bg-danger text-danger text-center div-error" hidden></div>
-        </div>
-        <div class="form-group">
-            <label for="confirmpassword">Confirm Password:</label>
-            <div class="input-group" id="show_hide_confirm_password" style="cursor: pointer;">
-                <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" style="max-width: 100%;" required>
-                <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                <div id="error_firstname" class="bg-danger text-danger text-center mb-1 div-error"></div>
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="lastname" name="LastName" placeholder="Last Name" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text" id="icon_lastname">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div id="error_confirm_password" class="bg-danger text-danger text-center div-error" hidden></div>
+                <div id="error_lastname" class="bg-danger text-danger text-center mb-1 div-error"></div>
+                <div class="input-group mb-2">
+                    <input type="date" class="form-control" id="birthdate" name="BirthDate" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text" id="icon_birthdate">
+                            <span class="fas fa-birthday-cake"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="error_birthdate" class="bg-danger text-danger text-center mb-1 div-error"></div>
+                <div class="input-group mb-2">
+                    <select id="gender" class="form-control" name="Gender" required>
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>
+                    </select>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-mars"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="username" name="Username" placeholder="Username">
+                    <div class="input-group-append">
+                        <div class="input-group-text" id="icon_username">
+                            <span class="fas fa-user-circle"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="error_username" class="bg-danger text-danger text-center mb-1 div-error"></div>
+                <div class="input-group mb-2">
+                    <input type="password" class="form-control" id="password" name="Password" placeholder="Password">
+                    <div class="input-group-append">
+                        <div class="input-group-text" id="icon_password">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="error_password" class="bg-danger text-danger text-center mb-1 div-error"></div>
+                <div class="input-group mb-2">
+                    <input type="password" class="form-control" id="confirm_password" name="ConfirmPassword" placeholder="Retype password">
+                    <div class="input-group-append">
+                        <div class="input-group-text" id="icon_confirm_password">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="error_confirm_password" class="bg-danger text-danger text-center mb-1 div-error"></div>
+                <div class="input-group mb-3">
+                    <button type="submit" class="btn btn-primary btn-block" id="btn_register">Register</button>
+                </div>
+            </form>
+            <p class="mb-0">
+                <a href="@Url.Action("Index", "User")" class="text-center">Log in</a>
+            </p>
         </div>
-        <input type="submit" value="Register" class="btn btn-primary btn-block" style="max-width: 100%; outline: none;" />
-    </form>
+        <!-- /.form-box -->
+    </div>
 </div>
 
 <div class="modal fade" id="success_modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Message</h4>
+                <h5 class="modal-title text-primary" id="exampleModalLabel">Message</h5>
             </div>
-            <div class="modal-body text-center text-success" id="success_message" style="font-weight: bold; font-size: 18px;">
+            <div class="modal-body text-center text-success" id="success_message" style="font-size: 20px;">
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn_okay" style="outline: none;">Okay</button>
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" id="btn_okay" style="outline: none;">Okay</button>
             </div>
         </div>
     </div>
@@ -90,55 +119,63 @@
             if (firstname === "") {
                 $("#error_firstname").show().html("First Name is Required.")
                 $("#firstname").css("border-color", "#d9534f").focus()
+                $("#icon_firstname").addClass("icon_error")
                 hasError = true
             } else {
-                $("#error_lastname").hide().html("")
-                $("#lastname").css("border-color", "#ccc")
+                $("#error_firstname").hide().html("")
+                $("#firstname").css("border-color", "#ccc")
+                $("#icon_firstname").removeClass("icon_error")
             }
             if (lastname === "") {
                 $("#error_lastname").show().html("Last Name is Required.")
                 $("#lastname").css("border-color", "#d9534f").focus()
+                $("#icon_lastname").addClass("icon_error")
                 hasError = true
             } else {
                 $("#error_lastname").hide().html("")
                 $("#lastname").css("border-color", "#ccc")
+                $("#icon_lastname").removeClass("icon_error")
             }
             const validationResult = validate_birthdate(birthdate)
             if (!validationResult) {
                 $("#error_birthdate").show().html("Invalid Birthdate.")
                 $("#birthdate").css("border-color", "#d9534f").focus()
+                $("#icon_birthdate").addClass("icon_error")
                 hasError = true
             } else {
                 $("#error_birthdate").hide().html("")
                 $("#birthdate").css("border-color", "#ccc")
+                $("#icon_birthdate").removeClass("icon_error")
             }
             if (username === "") {
                 $("#error_username").show().html("Username is Required.")
                 $("#username").css("border-color", "#d9534f").focus()
+                $("#icon_username").addClass("icon_error")
                 hasError = true
             } else {
                 $("#error_username").hide().html("")
                 $("#username").css("border-color", "#ccc")
+                $("#icon_username").removeClass("icon_error")
             }
             if (password === "") {
                 $("#error_password").show().html("Password is Required.")
                 $("#password").css("border-color", "#d9534f").focus()
-                $("#show_hide_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                $("#icon_password").addClass("icon_error")
                 hasError = true
             } else {
                 $("#error_password").hide().html("")
                 $("#password").css("border-color", "#ccc")
-                $("#show_hide_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+                $("#icon_password").removeClass("icon_error")
             }
             if (confirmPassword === "") {
                 $("#error_confirm_password").show().html("Confirm Password is Required.")
                 $("#confirm_password").css("border-color", "#d9534f").focus()
-                $("#show_hide_confirm_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
+                $("#icon_confirm_password").addClass("icon_error")
                 hasError = true
             } else {
                 $("#error_confirm_password").hide().html("")
                 $("#confirm_password").css("border-color", "#ccc")
-                $("#show_hide_confirm_password .input-group-addon").css("border-color", "#ccc").css("color", "#555555")
+                $("#icon_confirm_password").removeClass("icon_error")
             }
             if (!hasError) {
                 if (password === confirmPassword) {
@@ -146,55 +183,23 @@
                     $.post('Register', data, (res) => {
                         if (!res.Result) {
                             $("#error_username").show().html(res.Message)
-                            $("#username").css("border-color", "#ff0000").focus()
+                            $("#username").css("border-color", "#d9534f").focus()
                         } else {
                             $('#success_modal').modal('show')
                             $("#success_message").html(res.Message)
-                            $('#show_hide_confirm_password input').attr('type', 'password');
-                            $('#show_hide_confirm_password span').removeClass("glyphicon-eye-close");
-                            $('#show_hide_confirm_password span').addClass("glyphicon-eye-open");
-                            $('#show_hide_password input').attr('type', 'password');
-                            $('#show_hide_password span').removeClass("glyphicon-eye-close");
-                            $('#show_hide_password span').addClass("glyphicon-eye-open");
                         }
                     })
                 } else {
                     $("#error_password").show().html("Password confirmation does not match.")
-                    $("#password").css("border-color", "#ff0000").focus()
+                    $("#password").css("border-color", "#d9534f").focus()
+                    $("#icon_password").addClass("icon_error")
                 }
             }
         })
 
         $("#btn_okay").click(() => {
+            $("#btn_register").attr("disabled", true)
             location.href = '/'
-        })
-
-        $("#show_hide_password").click((e) => {
-            if (e.target.tagName !== "INPUT") {
-                if ($("#show_hide_password input").attr("type") === "text") {
-                    $('#show_hide_password input').attr('type', 'password');
-                    $('#show_hide_password span').removeClass("glyphicon-eye-close");
-                    $('#show_hide_password span').addClass("glyphicon-eye-open");
-                } else {
-                    $('#show_hide_password input').attr('type', 'text');
-                    $('#show_hide_password span').removeClass("glyphicon-eye-open");
-                    $('#show_hide_password span').addClass("glyphicon-eye-close");
-                }
-            }
-        })
-
-        $("#show_hide_confirm_password").click((e) => {
-            if (e.target.tagName !== "INPUT") {
-                if ($("#show_hide_confirm_password input").attr("type") === "text") {
-                    $('#show_hide_confirm_password input').attr('type', 'password');
-                    $('#show_hide_confirm_password span').removeClass("glyphicon-eye-close");
-                    $('#show_hide_confirm_password span').addClass("glyphicon-eye-open");
-                } else {
-                    $('#show_hide_confirm_password input').attr('type', 'text');
-                    $('#show_hide_confirm_password span').removeClass("glyphicon-eye-open");
-                    $('#show_hide_confirm_password span').addClass("glyphicon-eye-close");
-                }
-            }
         })
 
         $("#success_modal").on("hidden.bs.modal", () => {
@@ -212,9 +217,15 @@
 
 <style>
     .div-error {
-        font-weight: bold;
-        padding: 5px;
-        margin-top: 3px;
+        margin-top: -5px;
+        margin-bottom: 1px;
+        padding: 2px;
+        display: none;
+        border-radius: 5px;
     }
 
+    .icon_error {
+        border: 1px solid red;
+        color: red;
+    }
 </style>

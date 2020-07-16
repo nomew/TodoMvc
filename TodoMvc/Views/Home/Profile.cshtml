@@ -1,120 +1,107 @@
-﻿
-@{
+﻿@{ 
     ViewBag.Title = "Profile";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="container" style="padding: 20px 30% 0;">
-        <h2 style="text-align: center; margin-bottom: 20px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Profile</h2>
-        <form id="form_profile">
-            @Html.AntiForgeryToken()
-            <div class="alert alert-success text-center" id="profile_message" hidden>
-                <span class="close" aria-label="close" id="close_alert">&times;</span>
-                <span style="font-weight: bolder;" id="message"></span>
-            </div>
-            <div class="form-group">
-                <label for="firstname">First Name:</label>
-                <input type="text" class="form-control" id="firstname" name="FirstName" style="max-width: 100%; text-transform: capitalize;" readonly required>
-                <div id="error_firstname" class="bg-danger text-danger text-center error" hidden></div>
-            </div>
-            <div class="form-group">
-                <label for="lastname">Last Name:</label>
-                <input type="text" class="form-control" id="lastname" name="LastName" style="max-width: 100%; text-transform: capitalize;" readonly required>
-                <div id="error_lastname" class="bg-danger text-danger text-center error" hidden></div>
-            </div>
-            <div class="form-group">
-                <label for="gender">Gender:</label>
-                <input type="text" class="form-control" id="gender_text" style="max-width: 100%;" readonly required>
-                <select id="gender" class="form-control hidden" name="Gender" style="max-width: 100%;" required>
-                    <option value="1">Male</option>
-                    <option value="0">Female</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="birthdate">Birth Date:</label>
-                <input type="date" class="form-control" id="birthdate" name="BirthDate" style="max-width: 100%;" readonly required>
-                <div id="error_birthdate" class="bg-danger text-danger text-center error" hidden></div>
-            </div>
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" name="Username" style="max-width: 100%;" readonly required>
-                <div id="error_username" class="bg-danger text-danger text-center error" hidden></div>
-            </div>
-            <div id="div1">
-                <button type="button" class="btn btn-block btn-primary" id="btn_update" style="outline: none;">Update</button>
-                <button type="button" class="btn btn-block btn-primary" id="btn_change_password" data-toggle="modal" data-target="#changePasswordModal" style="outline: none;">Change Password</button>
-            </div>
-            <div id="div2" hidden>
-                <button type="submit" class="btn btn-block btn-success" style="outline: none;">Save</button>
-                <button type="button" class="btn btn-block btn-danger" id="btn_close" style="outline: none;">Close</button>
-            </div>
-        </form>
-    </div>
-
-    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form id="form_change_password">
+    <div class="container-fluid" style="padding: 0 30% 30px; margin-top: -25px;" id="profile_div">
+        <div class="card">
+            <div class="card-body register-card-body">
+                <form id="form_profile">
                     @Html.AntiForgeryToken()
-                    <div class="modal-header">
-                        <h3 class="modal-title text-primary">Change Password</h3>
+                    <div class="alert alert-success text-center" id="profile_message" style="display: none;">
+                        <span class="close" aria-label="close" id="close_alert" style="cursor: pointer;">&times;</span>
+                        <span style="font-weight: bolder;" id="message"></span>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="current_password" class="col-form-label">Current Password:</label>
-                            <div class="input-group" id="show_hide_current_password" style="cursor: pointer;">
-                                <input type="password" class="form-control" id="current_password" name="CurrentPassword" placeholder="Current Password" style="max-width: 100%;" required>
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                </div>
-                            </div>
-                            <div id="error_current_password" class="bg-danger text-danger text-center error" hidden></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="new_password" class="col-form-label">New Password:</label>
-                            <div class="input-group" id="show_hide_new_password" style="cursor: pointer;">
-                                <input type="password" class="form-control" id="new_password" name="NewPassword" placeholder="New Password" style="max-width: 100%;" required>
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                </div>
-                            </div>
-                            <div id="error_new_password" class="bg-danger text-danger text-center error" hidden></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm_password" class="col-form-label">Confirm Password:</label>
-                            <div class="input-group" id="show_hide_confirm_password" style="cursor: pointer;">
-                                <input type="password" class="form-control" id="confirm_password" name="ConfirmPassword" placeholder="Confirm Password" style="max-width: 100%;" required>
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                </div>
-                            </div>
-                            <div id="error_confirm_password" class="bg-danger text-danger text-center error" hidden></div>
-                        </div>
+                    <div class="form-group">
+                        <label for="firstname">First Name:</label>
+                        <input type="text" class="form-control" id="firstname" name="FirstName" style="text-transform: capitalize;" readonly required>
+                        <div id="error_firstname" class="bg-danger text-danger text-center error"></div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" style="outline: none;" id="close_change_password_modal">Close</button>
-                        <button type="submit" class="btn btn-primary" style="outline: none;">Save</button>
+                    <div class="form-group">
+                        <label for="lastname">Last Name:</label>
+                        <input type="text" class="form-control" id="lastname" name="LastName" style="text-transform: capitalize;" readonly required>
+                        <div id="error_lastname" class="bg-danger text-danger text-center error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <input type="text" class="form-control" id="gender_text" readonly>
+                        <select id="gender" class="form-control" name="Gender" style="display: none;" required>
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthdate">Birth Date:</label>
+                        <input type="text" class="form-control" id="birthdate_text" style="max-width: 100%;" readonly />
+                        <input type="date" class="form-control" id="birthdate" name="BirthDate" style="display: none;" required>
+                        <div id="error_birthdate" class="bg-danger text-danger text-center error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" name="Username" style="max-width: 100%;" readonly required>
+                        <div id="error_username" class="bg-danger text-danger text-center error"></div>
+                    </div>
+                    <div id="div1">
+                        <button type="button" class="btn btn-block btn-primary btn-md" id="btn_update">Update</button>
+                        <button type="button" class="btn btn-block btn-primary btn-md" id="btn_change_password" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
+                    </div>
+                    <div id="div2" style="display:none;">
+                        <button type="submit" class="btn btn-block btn-success btn-md">Save</button>
+                        <button type="button" class="btn btn-block btn-danger btn-md" id="btn_close">Close</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="changePasswordSuccessfulModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="form_change_password">
+                @Html.AntiForgeryToken()
                 <div class="modal-header">
-                    <h3 class="modal-title text-primary">Message</h3>
+                    <h4 class="modal-title">Change Password</h4>
                 </div>
-                <div class="modal-body text-success text-center" style="font-weight: bolder; font-size: 16px;" id="message">
-                    
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="current_password" class="col-form-label">Current Password:</label>
+                        <input type="password" class="form-control" id="current_password" name="CurrentPassword" placeholder="Current Password" required>
+                        <div id="error_current_password" class="bg-danger text-danger text-center error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password" class="col-form-label">New Password:</label>
+                        <input type="password" class="form-control" id="new_password" name="NewPassword" placeholder="New Password" required>
+                        <div id="error_new_password" class="bg-danger text-danger text-center error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password" class="col-form-label">Confirm Password:</label>
+                        <input type="password" class="form-control" id="confirm_password" name="ConfirmPassword" placeholder="Confirm Password" required>
+                        <div id="error_confirm_password" class="bg-danger text-danger text-center error"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" style="outline: none;" data-dismiss="modal">Okay</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="close_change_password_modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changePasswordSuccessfulModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Message</h4>
+            </div>
+            <div class="modal-body text-success text-center" style="font-size: 20px;" id="message">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Okay</button>
             </div>
         </div>
     </div>
+</div>
 
 <script>
     var profile;
@@ -125,15 +112,23 @@
                 render(profile)
             })
         }
+
         fetch_profile()
 
         const render = (data) => {
+            $("#user_fullname").html(`${data.FirstName} ${data.LastName}`)
             $("#firstname").val(data.FirstName)
             $("#lastname").val(data.LastName)
             $("#gender").val(data.Gender)
             $("#gender_text").val(data.Gender === 1 ? "Male" : "Female")
             $("#birthdate").val(data.BirthDate)
+            $("#birthdate_text").val(get_birthdate(data.BirthDate))
             $("#username").val(data.Username)
+        }
+
+        const get_birthdate = (data) => {
+            let date = new Date(data)
+            return `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`
         }
 
         $("#btn_update").click(() => {
@@ -141,7 +136,9 @@
             $("#div1").hide()
             $("#form_profile input").removeAttr("readonly")
             $("#gender_text").hide()
-            $("#gender").removeClass("hidden")
+            $("#birthdate_text").hide()
+            $("#gender").show()
+            $("#birthdate").show()
             $("#profile_message").fadeOut()
         })
 
@@ -209,7 +206,7 @@
                         } else {
                             clear_fields()
                         }
-                        
+
                     }
                 })
             }
@@ -225,7 +222,9 @@
             $("#username").css("border-color", "#ccc").attr("readonly", true)
             $("#birthdate").css("border-color", "#ccc").attr("readonly", true)
             $("#gender_text").show().attr("readonly", true)
-            $("#gender").addClass("hidden")
+            $("#gender").hide()
+            $("#birthdate_text").show().attr("readonly", true)
+            $("#birthdate").hide()
             $("#div1").show()
             $("#div2").hide()
         }
@@ -351,7 +350,7 @@
                                 $("#new_password").css("border-color", "#d9534f")
                                 $("#show_hide_new_password .input-group-addon").css("border-color", "#d9534f").css("color", "#d9534f")
                             }
-                            
+
                         }
                     })
                 }
@@ -367,6 +366,8 @@
         })
 
         $("#changePasswordSuccessfulModal").on("hidden.bs.modal", () => {
+            $("#btn_update").attr("disabled", true)
+            $("#btn_change_password").attr("disabled", true)
             location.href = "/"
         })
 
@@ -377,6 +378,7 @@
             console.log(age)
             return (age >= 18 && age <= 120)
         }
+        
     })
 </script>
 
@@ -385,5 +387,7 @@
         font-weight: bold;
         padding: 5px;
         margin-top: 3px;
+        display: none;
+        border-radius: 5px;
     }
 </style>

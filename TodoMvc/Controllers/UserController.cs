@@ -17,17 +17,16 @@ namespace TodoMvc.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(User user)
         {
-            bool res = false;
             using (var context = new AppContextMain())
             {
                 var data = context.Users.Where(u => u.Username == user.Username && u.Password == user.Password).SingleOrDefault();
                 if (data != null)
                 {
-                    res = true;
                     Session["UserId"] = data.UserId;
+                    return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
                 }
+                return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
             }
-            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Registration()
