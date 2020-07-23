@@ -14,13 +14,14 @@ namespace TodoMvc.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            List<Todo> todos;
             using (var context = new AppContextMain())
             {
                 int UserId = Convert.ToInt32(Session["UserId"].ToString());
-                todos = context.Todos.Where(t => t.UserReference == UserId).OrderByDescending(t => t.DateCreated).ToList();
+                //int UserId = 2;
+                List<Todo> todos = context.Todos.Where(t => t.UserReference == UserId).OrderByDescending(t => t.DateCreated).ToList();
+                return Json(todos, JsonRequestBehavior.AllowGet);
+
             }
-            return Json(todos, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
