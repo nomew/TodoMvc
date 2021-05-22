@@ -1,3 +1,3 @@
 # TodoMvc
 
-A Todo Application built using ASP.net and JQuery.
+A simple Todo Web Application built using ASP.net and JQuery.
